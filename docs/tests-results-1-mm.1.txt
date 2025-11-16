@@ -1,0 +1,50 @@
+Running tests against local environment...
+newman
+
+CinemaAbyss API Tests
+
+❏ Movies Microservice
+↳ Health Check
+  GET http://127.0.0.1:8081/api/movies/health [200 OK, 124B, 47ms]
+  ✓  Status code is 200
+  ✓  Status is true
+
+↳ Get All Movies
+  GET http://127.0.0.1:8081/api/movies [200 OK, 1.51kB, 38ms]
+  ✓  Status code is 200
+  ✓  Response is an array
+
+↳ Create Movie
+  POST http://127.0.0.1:8081/api/movies [201 Created, 282B, 17ms]
+  ✓  Status code is 201
+  ✓  Response has id
+
+↳ Get Movie by ID
+  GET http://127.0.0.1:8081/api/movies?id=7 [200 OK, 277B, 6ms]
+  ✓  Status code is 200
+  ✓  Movie ID matches
+
+┌─────────────────────────┬──────────────────┬──────────────────┐
+│                         │         executed │           failed │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│              iterations │                1 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│                requests │                4 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│            test-scripts │                4 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│      prerequest-scripts │                0 │                0 │
+├─────────────────────────┼──────────────────┼──────────────────┤
+│              assertions │                8 │                0 │
+├─────────────────────────┴──────────────────┴──────────────────┤
+│ total run duration: 622ms                                     │
+├───────────────────────────────────────────────────────────────┤
+│ total data received: 1.75kB (approx)                          │
+├───────────────────────────────────────────────────────────────┤
+│ average response time: 27ms [min: 6ms, max: 47ms, s.d.: 16ms] │
+└───────────────────────────────────────────────────────────────┘
+Newman run completed!
+Total requests: 4
+Failed requests: 0
+Total assertions: 8
+Failed assertions: 0

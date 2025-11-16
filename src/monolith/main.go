@@ -71,6 +71,7 @@ func initDB() {
 	if connStr == "" {
 		connStr = "postgres://postgres:postgres@localhost/cinemaabyss?sslmode=disable"
 	}
+    time.Sleep(10 * time.Second)
 	var err error
 	db, err = sql.Open("postgres", connStr)
 	if err != nil {

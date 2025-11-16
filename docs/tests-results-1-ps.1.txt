@@ -1,0 +1,44 @@
+Running tests against local environment...
+newman
+
+CinemaAbyss API Tests
+
+❏ Proxy Service
+↳ Health Check
+  GET http://127.0.0.1:8000/health [200 OK, 132B, 317ms]
+  ✓  Status code is 200
+
+↳ Get All Movies via Proxy
+  GET http://127.0.0.1:8000/api/movies [200 OK, 1.38kB, 39ms]
+  ✓  Status code is 200
+  ✓  Response is an array
+
+↳ Get All Users via Proxy
+  GET http://127.0.0.1:8000/api/users [200 OK, 286B, 16ms]
+  ✓  Status code is 200
+  ✓  Response is an array
+
+┌─────────────────────────┬────────────────────┬────────────────────┐
+│                         │           executed │             failed │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│              iterations │                  1 │                  0 │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│                requests │                  3 │                  0 │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│            test-scripts │                  3 │                  0 │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│      prerequest-scripts │                  0 │                  0 │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│              assertions │                  5 │                  0 │
+├─────────────────────────┴────────────────────┴────────────────────┤
+│ total run duration: 766ms                                         │
+├───────────────────────────────────────────────────────────────────┤
+│ total data received: 1.45kB (approx)                              │
+├───────────────────────────────────────────────────────────────────┤
+│ average response time: 124ms [min: 16ms, max: 317ms, s.d.: 136ms] │
+└───────────────────────────────────────────────────────────────────┘
+Newman run completed!
+Total requests: 3
+Failed requests: 0
+Total assertions: 5
+Failed assertions: 0
