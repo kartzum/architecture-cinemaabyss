@@ -252,6 +252,17 @@ cat .docker/config.json | base64
   zookeeper-0                       1/1     Running 
 ```
 
+```
+NAME                              READY   STATUS    RESTARTS      AGE
+events-service-76d9cd9cc9-c9krq   1/1     Running   2 (19m ago)   23m
+kafka-0                           1/1     Running   0             26m
+monolith-56c979d79d-8zlkf         1/1     Running   0             23m
+movies-service-5459fbd777-bfn7x   1/1     Running   0             23m
+postgres-0                        1/1     Running   0             26m
+proxy-service-57664dd569-dh4r9    1/1     Running   0             23m
+zookeeper-0                       1/1     Running   0             26m
+```
+
 >  8. Добавим ingress
 
 >  - добавьте аддон
@@ -282,6 +293,9 @@ cat .docker/config.json | base64
 #### Шаг 3
 > Добавьте сюда скриншота вывода при вызове https://cinemaabyss.example.com/api/movies и  скриншот вывода event-service после вызова тестов.
 
+[Результаты запуска тестов](docs/tests-results-2-e.kub.1.txt)
+
+![Скрин кафки-1](docs/kub-1.png)
 
 # Задание 4
 > Для простоты дальнейшего обновления и развертывания вам как архитектуру необходимо так же реализовать helm-чарты для прокси-сервиса и проверить работу

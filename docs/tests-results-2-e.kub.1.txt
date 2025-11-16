@@ -1,0 +1,50 @@
+Running tests against kubernetes environment...
+newman
+
+CinemaAbyss API Tests
+
+❏ Events Microservice
+↳ Health Check
+  GET http://cinemaabyss.example.com/api/events/health [200 OK, 155B, 45ms]
+  ✓  Status code is 200
+  ✓  Status is true
+
+↳ Create Movie Event
+  POST http://cinemaabyss.example.com/api/events/movie [201 Created, 219B, 11ms]
+  ✓  Status code is 201
+  ✓  Response has status success
+
+↳ Create User Event
+  POST http://cinemaabyss.example.com/api/events/user [201 Created, 251B, 14ms]
+  ✓  Status code is 201
+  ✓  Response has status success
+
+↳ Create Payment Event
+  POST http://cinemaabyss.example.com/api/events/payment [201 Created, 270B, 11ms]
+  ✓  Status code is 201
+  ✓  Response has status success
+
+┌─────────────────────────┬───────────────────┬──────────────────┐
+│                         │          executed │           failed │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│              iterations │                 1 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│                requests │                 4 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│            test-scripts │                 4 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│      prerequest-scripts │                 0 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│              assertions │                 8 │                0 │
+├─────────────────────────┴───────────────────┴──────────────────┤
+│ total run duration: 587ms                                      │
+├────────────────────────────────────────────────────────────────┤
+│ total data received: 320B (approx)                             │
+├────────────────────────────────────────────────────────────────┤
+│ average response time: 20ms [min: 11ms, max: 45ms, s.d.: 14ms] │
+└────────────────────────────────────────────────────────────────┘
+Newman run completed!
+Total requests: 4
+Failed requests: 0
+Total assertions: 8
+Failed assertions: 0
