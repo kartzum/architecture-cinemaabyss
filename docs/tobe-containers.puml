@@ -1,0 +1,81 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(user, "Пользователь", "Смотрит фильмы и сериалы через стриминговый сервис")
+
+System_Boundary(kinobezdna, "Система Кинобездна") {
+    Container(api_gateway, "API Gateway", "Java/Go", "Маршрутизация запросов, аутентификация, кэширование")
+
+    Container(users_service, "Users Service", "Java/Go", "Управление пользователями, профили, аутентификация")
+    ContainerDb(users_db, "Users DB", "PostgreSQL", "Хранение данных пользователей")
+
+    Container(payments_service, "Payments Service", "Java/Go", "Обработка платежей, работа с платежными системами")
+    ContainerDb(payments_db, "Payments DB", "PostgreSQL", "Хранение платежных транзакций")
+
+    Container(subscriptions_service, "Subscriptions Service", "Java/Go", "Управление подписками, тарифы")
+    ContainerDb(subscriptions_db, "Subscriptions DB", "PostgreSQL", "Хранение данных о подписках")
+
+    Container(discounts_service, "Discounts Service", "Java/Go", "Управление скидками и промо-акциями")
+    ContainerDb(discounts_db, "Discounts DB", "PostgreSQL", "Хранение данных о скидках")
+
+    Container(movies_service, "Movies Service", "Java/Go", "Управление метаданными контента, каталог")
+    ContainerDb(movies_db, "Movies DB", "PostgreSQL", "Хранение метаданных фильмов и сериалов")
+
+    Container(videos_service, "Videos Service", "Java/Go", "Стриминг видео, интеграция с внешними поставщиками")
+
+    Container(recommendations_service, "Recommendations Service", "Java/Go", "Генерация рекомендаций контента")
+
+    Container(events_service, "Events Service", "Java/Go", "Обработка событий, интеграция с Kafka")
+
+    ContainerQueue(kafka, "Kafka", "Apache Kafka", "Асинхронная коммуникация между сервисами")
+}
+
+' Внешние системы
+System_Ext(payment_providers, "Платежные системы", "Stripe, PayPal, etc.")
+System_Ext(video_providers, "Поставщики видео", "CDN, внешние стриминговые платформы")
+System_Ext(external_recommendations, "Внешняя система рекомендаций", "ML-based рекомендательный движок")
+
+' Связи пользователя
+Rel(user, api_gateway, "HTTPS", "REST API")
+
+' Связи API Gateway с сервисами
+Rel(api_gateway, users_service, "HTTP/gRPC", "Внутренние запросы")
+Rel(api_gateway, payments_service, "HTTP/gRPC", "Внутренние запросы")
+Rel(api_gateway, subscriptions_service, "HTTP/gRPC", "Внутренние запросы")
+Rel(api_gateway, discounts_service, "HTTP/gRPC", "Внутренние запросы")
+Rel(api_gateway, movies_service, "HTTP/gRPC", "Внутренние запросы")
+Rel(api_gateway, videos_service, "HTTP/gRPC", "Внутренние запросы")
+Rel(api_gateway, recommendations_service, "HTTP/gRPC", "Внутренние запросы")
+
+' Связи сервисов с БД
+Rel(users_service, users_db, "JDBC/gorm", "CRUD операции")
+Rel(payments_service, payments_db, "JDBC/gorm", "CRUD операции")
+Rel(subscriptions_service, subscriptions_db, "JDBC/gorm", "CRUD операции")
+Rel(discounts_service, discounts_db, "JDBC/gorm", "CRUD операции")
+Rel(movies_service, movies_db, "JDBC/gorm", "CRUD операции")
+
+' Связи с внешними системами
+Rel(payments_service, payment_providers, "HTTPS", "API вызовы")
+Rel(videos_service, video_providers, "HTTPS/RTMP", "Стриминг видео")
+Rel(recommendations_service, external_recommendations, "gRPC/HTTP", "Получение рекомендаций")
+
+' Асинхронные связи через Kafka
+Rel(users_service, kafka, "Kafka Protocol", "События пользователей")
+Rel(payments_service, kafka, "Kafka Protocol", "События платежей")
+Rel(subscriptions_service, kafka, "Kafka Protocol", "События подписок")
+Rel(discounts_service, kafka, "Kafka Protocol", "События скидок")
+Rel(movies_service, kafka, "Kafka Protocol", "События контента")
+
+Rel(kafka, events_service, "Kafka Protocol", "Обработка событий")
+Rel(events_service, recommendations_service, "HTTP/gRPC", "Обновление рекомендаций")
+Rel(events_service, users_service, "HTTP/gRPC", "Уведомления")
+Rel(events_service, subscriptions_service, "HTTP/gRPC", "Обновление статусов подписок")
+
+' Внутренние синхронные связи
+Rel(recommendations_service, movies_service, "HTTP/gRPC", "Получение метаданных контента")
+Rel(recommendations_service, users_service, "HTTP/gRPC", "Получение данных пользователя")
+Rel(subscriptions_service, users_service, "HTTP/gRPC", "Проверка пользователя")
+Rel(subscriptions_service, discounts_service, "HTTP/gRPC", "Применение скидок")
+Rel(payments_service, subscriptions_service, "HTTP/gRPC", "Обновление статуса подписки")
+
+@enduml
