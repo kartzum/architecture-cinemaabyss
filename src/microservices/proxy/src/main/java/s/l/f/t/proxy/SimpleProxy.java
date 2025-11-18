@@ -16,6 +16,7 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class SimpleProxy {
 
@@ -34,19 +35,34 @@ public class SimpleProxy {
     }
 
     static class ProxyHandler implements HttpHandler {
+        private static final String API_MOVIES = "/api/movies";
+        private static final String API_USERS = "/api/users";
+
         private final HttpClient httpClient = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(10))
                 .build();
 
         private final Map<String, String> targets;
 
+        private final String mono;
+
+        private final boolean migration;
+        private final int migrationPercent;
+
+        private final Random random = new Random();
+
         ProxyHandler() {
             String movies = getStringEnv("MOVIES_SERVICE_URL", "http://localhost:8081");
-            String mono = getStringEnv("MONOLITH_URL", "http://localhost:8080");
+            mono = getStringEnv("MONOLITH_URL", "http://localhost:8080");
+            migration = getBoolEnv("GRADUAL_MIGRATION", false);
+            migrationPercent = getIntegerEnv("MOVIES_MIGRATION_PERCENT", 0);
             targets = Map.of(
-                    "/api/movies", movies,
-                    "/api/users", mono,
+                    API_MOVIES, movies,
+                    API_USERS, mono,
                     "/health", mono
+            );
+            System.out.printf(
+                    "movies = %s, mono = %s, migration = %s, p = %s\n", movies, mono, migration, migrationPercent
             );
         }
 
@@ -55,6 +71,8 @@ public class SimpleProxy {
             String path = exchange.getRequestURI().getPath();
             String query = exchange.getRequestURI().getQuery();
 
+            System.out.println("Path = " + path + ", query = " + query);
+
             try {
                 String targetUrl = null;
                 for (Map.Entry<String, String> e : targets.entrySet()) {
@@ -62,11 +80,24 @@ public class SimpleProxy {
                         targetUrl = e.getValue() + path + (query != null ? "?" + query : "");
                     }
                 }
+                System.out.println("Target = " + targetUrl);
                 if (targetUrl == null) {
                     sendError(exchange, 404, "Not Found", null);
                     return;
                 }
-                handleProxyRequest(exchange, targetUrl);
+                if (path.startsWith(API_MOVIES)) {
+                    if (migration && migrationPercent <= random.nextInt(100)) {
+                        System.out.println("Handle with percent");
+                        handleProxyRequest(exchange, targetUrl);
+                    } else {
+                        System.out.println("Handle without percent");
+                        String targetUrlInner = mono + path + (query != null ? "?" + query : "");
+                        handleProxyRequest(exchange, targetUrlInner);
+                    }
+                } else {
+                    System.out.println("Simple handle");
+                    handleProxyRequest(exchange, targetUrl);
+                }
             } catch (Exception e) {
                 sendError(exchange, 500, "Internal Server Error", null);
             }
@@ -103,6 +134,8 @@ public class SimpleProxy {
                 try (OutputStream os = exchange.getResponseBody(); InputStream is = response.body()) {
                     is.transferTo(os);
                 }
+
+                System.out.println("Done");
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 sendError(exchange, 500, "Request interrupted", e);
@@ -135,6 +168,14 @@ public class SimpleProxy {
     private static int getIntegerEnv(String key, int defaultValue) {
         try {
             return Integer.parseInt(getStringEnv(key, null));
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
+
+    private static boolean getBoolEnv(String key, boolean defaultValue) {
+        try {
+            return Boolean.parseBoolean(getStringEnv(key, null));
         } catch (NumberFormatException e) {
             return defaultValue;
         }

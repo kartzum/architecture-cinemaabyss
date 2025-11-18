@@ -1,0 +1,25 @@
+cinemaabyss-proxy-service   | Path = /api/movies, query = null
+cinemaabyss-proxy-service   | Target = http://movies-service:8081/api/movies
+cinemaabyss-proxy-service   | Handle with percent
+cinemaabyss-proxy-service   | Handle request: http://movies-service:8081/api/movies
+cinemaabyss-movies-service  | get movies from movies
+cinemaabyss-proxy-service   | Done
+cinemaabyss-kafka-ui        | 2025-11-18 18:01:55,639 DEBUG [parallel-6] c.p.k.u.s.ClustersStatisticsScheduler: Start getting metrics for kafkaCluster: cinemaabyss
+cinemaabyss-kafka-ui        | 2025-11-18 18:01:55,679 DEBUG [parallel-7] c.p.k.u.s.ClustersStatisticsScheduler: Metrics updated for cluster: cinemaabyss
+cinemaabyss-proxy-service   | Path = /api/movies, query = null
+cinemaabyss-proxy-service   | Target = http://movies-service:8081/api/movies
+cinemaabyss-proxy-service   | Handle with percent
+cinemaabyss-proxy-service   | Handle request: http://movies-service:8081/api/movies
+cinemaabyss-movies-service  | get movies from movies
+cinemaabyss-proxy-service   | Done
+cinemaabyss-kafka-ui        | 2025-11-18 18:02:25,645 DEBUG [parallel-8] c.p.k.u.s.ClustersStatisticsScheduler: Start getting metrics for kafkaCluster: cinemaabyss
+cinemaabyss-kafka-ui        | 2025-11-18 18:02:25,693 DEBUG [parallel-1] c.p.k.u.s.ClustersStatisticsScheduler: Metrics updated for cluster: cinemaabyss
+cinemaabyss-proxy-service   | Path = /api/movies, query = null
+cinemaabyss-proxy-service   | Target = http://movies-service:8081/api/movies
+cinemaabyss-proxy-service   | Handle without percent
+cinemaabyss-proxy-service   | Handle request: http://monolith:8080/api/movies
+cinemaabyss-monolith        | get movies from monolith
+cinemaabyss-proxy-service   | Done
+cinemaabyss-kafka-ui        | 2025-11-18 18:02:55,642 DEBUG [parallel-2] c.p.k.u.s.ClustersStatisticsScheduler: Start getting metrics for kafkaCluster: cinemaabyss
+cinemaabyss-kafka-ui        | 2025-11-18 18:02:55,757 DEBUG [parallel-3] c.p.k.u.s.ClustersStatisticsScheduler: Metrics updated for cluster: cinemaabyss
+cinemaabyss-kafka-ui        | 2025-11-18 18:02:58,720 INFO  [kafka-admin-client-thread | kafka-ui-admin-1763488677-1] o.a.k.c.NetworkClient: [AdminClien
