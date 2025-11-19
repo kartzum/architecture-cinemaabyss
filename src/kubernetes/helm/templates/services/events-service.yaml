@@ -24,8 +24,19 @@ spec:
         app: events-service
     spec:
       containers:
-      - name: events-service
-       .... тут
+        - name: events-service
+          image: "{{ .Values.eventsService.image.repository }}:{{ .Values.eventsService.image.tag }}"
+          imagePullPolicy: {{ .Values.eventsService.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.eventsService.service.targetPort }}
+          env:
+            - name: PORT
+              value: "{{ .Values.eventsService.service.targetPort }}"
+          resources:
+            {{- toYaml .Values.eventsService.resources | nindent 12 }}
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: dockerconfigjson
 ---
 apiVersion: v1
 kind: Service
@@ -37,5 +48,11 @@ metadata:
     app.kubernetes.io/name: {{ include "cinemaabyss.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
- ........ и тут
-{{- end }}
+  selector:
+    app: events-service
+  ports:
+    - port: {{ .Values.eventsService.service.port }}
+      targetPort: {{ .Values.eventsService.service.targetPort }}
+      protocol: TCP
+  type: {{ .Values.eventsService.service.type }}
+  {{- end }}

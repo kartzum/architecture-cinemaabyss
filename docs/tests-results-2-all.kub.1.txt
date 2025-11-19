@@ -1,0 +1,272 @@
+
+> cinemaabyss-api-tests@1.0.0 test:kubernetes
+> node run-tests.js --environment kubernetes
+
+Running tests against kubernetes environment...
+newman
+
+CinemaAbyss API Tests
+
+❏ Monolith Service
+↳ Health Check
+  GET http://cinemaabyss.example.com/health [404 Not Found, 279B, 215ms]
+  1. Status code is 200
+
+↳ Get All Users
+  GET http://cinemaabyss.example.com/api/users [200 OK, 310B, 285ms]
+  ✓  Status code is 200
+  ✓  Response is an array
+
+↳ Create User
+  POST http://cinemaabyss.example.com/api/users [500 Internal Server Error, 140B, 124ms]
+  2. Status code is 201
+  3. Response has id
+
+↳ Get User by ID
+  GET http://cinemaabyss.example.com/api/users?id= [200 OK, 310B, 44ms]
+  ✓  Status code is 200
+  4. User ID matches
+
+↳ Get All Movies
+  GET http://cinemaabyss.example.com/api/movies [200 OK, 1.41kB, 1054ms]
+  ✓  Status code is 200
+  ✓  Response is an array
+
+↳ Create Movie
+  POST http://cinemaabyss.example.com/api/movies [500 Internal Server Error, 140B, 7ms]
+  5. Status code is 201
+  6. Response has id
+
+↳ Get Movie by ID
+  GET http://cinemaabyss.example.com/api/movies?id= [200 OK, 1.41kB, 18ms]
+  ✓  Status code is 200
+  7. Movie ID matches
+
+↳ Create Payment
+  POST http://cinemaabyss.example.com/api/payments [404 Not Found, 279B, 6ms]
+  8. Status code is 201
+  9. Response has id
+
+↳ Get Payment by ID
+  GET http://cinemaabyss.example.com/api/payments?id= [404 Not Found, 279B, 5ms]
+ 10. Status code is 200
+ 11. Payment ID matches
+
+↳ Create Subscription
+  POST http://cinemaabyss.example.com/api/subscriptions [404 Not Found, 279B, 7ms]
+ 12. Status code is 201
+ 13. Response has id
+
+↳ Get Subscription by ID
+  GET http://cinemaabyss.example.com/api/subscriptions?id= [404 Not Found, 279B, 3ms]
+ 14. Status code is 200
+ 15. Subscription ID matches
+
+❏ Movies Microservice
+↳ Health Check
+  GET http://cinemaabyss.example.com/api/movies/health [200 OK, 156B, 13ms]
+  ✓  Status code is 200
+  ✓  Status is true
+
+↳ Get All Movies
+  GET http://cinemaabyss.example.com/api/movies [200 OK, 1.41kB, 12ms]
+  ✓  Status code is 200
+  ✓  Response is an array
+
+↳ Create Movie
+  POST http://cinemaabyss.example.com/api/movies [500 Internal Server Error, 140B, 38ms]
+ 16. Status code is 201
+ 17. Response has id
+
+↳ Get Movie by ID
+  GET http://cinemaabyss.example.com/api/movies?id= [200 OK, 1.41kB, 22ms]
+  ✓  Status code is 200
+ 18. Movie ID matches
+
+❏ Events Microservice
+↳ Health Check
+  GET http://cinemaabyss.example.com/api/events/health [200 OK, 155B, 273ms]
+  ✓  Status code is 200
+  ✓  Status is true
+
+↳ Create Movie Event
+  POST http://cinemaabyss.example.com/api/events/movie [errored]
+     ESOCKETTIMEDOUT
+ 20. Status code is 201
+ 21. Response has status success
+
+↳ Create User Event
+  POST http://cinemaabyss.example.com/api/events/user [201 Created, 251B, 1656ms]
+  ✓  Status code is 201
+  ✓  Response has status success
+
+↳ Create Payment Event
+  POST http://cinemaabyss.example.com/api/events/payment [201 Created, 270B, 634ms]
+  ✓  Status code is 201
+  ✓  Response has status success
+
+❏ Proxy Service
+↳ Health Check
+  GET http://cinemaabyss.example.com/health [404 Not Found, 279B, 4ms]
+ 22. Status code is 200
+
+↳ Get All Movies via Proxy
+  GET http://cinemaabyss.example.com/api/movies [200 OK, 1.41kB, 54ms]
+  ✓  Status code is 200
+  ✓  Response is an array
+
+↳ Get All Users via Proxy
+  GET http://cinemaabyss.example.com/api/users [200 OK, 310B, 12ms]
+  ✓  Status code is 200
+  ✓  Response is an array
+
+┌─────────────────────────┬────────────────────┬────────────────────┐
+│                         │           executed │             failed │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│              iterations │                  1 │                  0 │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│                requests │                 22 │                  1 │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│            test-scripts │                 22 │                  0 │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│      prerequest-scripts │                  0 │                  0 │
+├─────────────────────────┼────────────────────┼────────────────────┤
+│              assertions │                 42 │                 21 │
+├─────────────────────────┴────────────────────┴────────────────────┤
+│ total run duration: 17.1s                                         │
+├───────────────────────────────────────────────────────────────────┤
+│ total data received: 8.05kB (approx)                              │
+├───────────────────────────────────────────────────────────────────┤
+│ average response time: 209ms [min: 3ms, max: 1656ms, s.d.: 404ms] │
+└───────────────────────────────────────────────────────────────────┘
+
+   #  failure         detail                                                          
+                                                                                      
+ 01.  AssertionError  Status code is 200                                              
+                      expected response to have status code 200 but got 404           
+                      at assertion:0 in test-script                                   
+                      inside "Monolith Service / Health Check"                        
+                                                                                      
+ 02.  AssertionError  Status code is 201                                              
+                      expected response to have status code 201 but got 500           
+                      at assertion:0 in test-script                                   
+                      inside "Monolith Service / Create User"                         
+                                                                                      
+ 03.  JSONError       Response has id                                                 
+                      Unexpected token 'I' at 1:1                                     
+                      Internal Server Error                                           
+                      ^                                                               
+                      at assertion:1 in test-script                                   
+                      inside "Monolith Service / Create User"                         
+                                                                                      
+ 04.  AssertionError  User ID matches                                                 
+                      expected undefined to equal NaN                                 
+                      at assertion:1 in test-script                                   
+                      inside "Monolith Service / Get User by ID"                      
+                                                                                      
+ 05.  AssertionError  Status code is 201                                              
+                      expected response to have status code 201 but got 500           
+                      at assertion:0 in test-script                                   
+                      inside "Monolith Service / Create Movie"                        
+                                                                                      
+ 06.  JSONError       Response has id                                                 
+                      Unexpected token 'I' at 1:1                                     
+                      Internal Server Error                                           
+                      ^                                                               
+                      at assertion:1 in test-script                                   
+                      inside "Monolith Service / Create Movie"                        
+                                                                                      
+ 07.  AssertionError  Movie ID matches                                                
+                      expected undefined to equal NaN                                 
+                      at assertion:1 in test-script                                   
+                      inside "Monolith Service / Get Movie by ID"                     
+                                                                                      
+ 08.  AssertionError  Status code is 201                                              
+                      expected response to have status code 201 but got 404           
+                      at assertion:0 in test-script                                   
+                      inside "Monolith Service / Create Payment"                      
+                                                                                      
+ 09.  JSONError       Response has id                                                 
+                      Unexpected token '<' at 1:1                                     
+                      <html>                                                          
+                      ^                                                               
+                      at assertion:1 in test-script                                   
+                      inside "Monolith Service / Create Payment"                      
+                                                                                      
+ 10.  AssertionError  Status code is 200                                              
+                      expected response to have status code 200 but got 404           
+                      at assertion:0 in test-script                                   
+                      inside "Monolith Service / Get Payment by ID"                   
+                                                                                      
+ 11.  JSONError       Payment ID matches                                              
+                      Unexpected token '<' at 1:1                                     
+                      <html>                                                          
+                      ^                                                               
+                      at assertion:1 in test-script                                   
+                      inside "Monolith Service / Get Payment by ID"                   
+                                                                                      
+ 12.  AssertionError  Status code is 201                                              
+                      expected response to have status code 201 but got 404           
+                      at assertion:0 in test-script                                   
+                      inside "Monolith Service / Create Subscription"                 
+                                                                                      
+ 13.  JSONError       Response has id                                                 
+                      Unexpected token '<' at 1:1                                     
+                      <html>                                                          
+                      ^                                                               
+                      at assertion:1 in test-script                                   
+                      inside "Monolith Service / Create Subscription"                 
+                                                                                      
+ 14.  AssertionError  Status code is 200                                              
+                      expected response to have status code 200 but got 404           
+                      at assertion:0 in test-script                                   
+                      inside "Monolith Service / Get Subscription by ID"              
+                                                                                      
+ 15.  JSONError       Subscription ID matches                                         
+                      Unexpected token '<' at 1:1                                     
+                      <html>                                                          
+                      ^                                                               
+                      at assertion:1 in test-script                                   
+                      inside "Monolith Service / Get Subscription by ID"              
+                                                                                      
+ 16.  AssertionError  Status code is 201                                              
+                      expected response to have status code 201 but got 500           
+                      at assertion:0 in test-script                                   
+                      inside "Movies Microservice / Create Movie"                     
+                                                                                      
+ 17.  JSONError       Response has id                                                 
+                      Unexpected token 'I' at 1:1                                     
+                      Internal Server Error                                           
+                      ^                                                               
+                      at assertion:1 in test-script                                   
+                      inside "Movies Microservice / Create Movie"                     
+                                                                                      
+ 18.  AssertionError  Movie ID matches                                                
+                      expected undefined to equal NaN                                 
+                      at assertion:1 in test-script                                   
+                      inside "Movies Microservice / Get Movie by ID"                  
+                                                                                      
+ 19.  Error                                                                           
+                      ESOCKETTIMEDOUT                                                 
+                      at request                                                      
+                      inside "Events Microservice / Create Movie Event"               
+                                                                                      
+ 20.  AssertionError  Status code is 201                                              
+                      expected { Object (id, _details, ...) } to have property 'code' 
+                      at assertion:0 in test-script                                   
+                      inside "Events Microservice / Create Movie Event"               
+                                                                                      
+ 21.  JSONError       Response has status success                                     
+                      "undefined" is not valid JSON                                   
+                      at assertion:1 in test-script                                   
+                      inside "Events Microservice / Create Movie Event"               
+                                                                                      
+ 22.  AssertionError  Status code is 200                                              
+                      expected response to have status code 200 but got 404           
+                      at assertion:0 in test-script                                   
+                      inside "Proxy Service / Health Check"                           
+Newman run completed!
+Total requests: 22
+Failed requests: 1
+Total assertions: 42
+Failed assertions: 21

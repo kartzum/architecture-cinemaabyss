@@ -1,0 +1,50 @@
+Running tests against local environment...
+newman
+
+CinemaAbyss API Tests
+
+❏ Events Microservice
+↳ Health Check
+  GET http://127.0.0.1:8082/api/events/health [200 OK, 179B, 35ms]
+  ✓  Status code is 200
+  ✓  Status is true
+
+↳ Create Movie Event
+  POST http://127.0.0.1:8082/api/events/movie [201 Created, 243B, 15ms]
+  ✓  Status code is 201
+  ✓  Response has status success
+
+↳ Create User Event
+  POST http://127.0.0.1:8082/api/events/user [201 Created, 275B, 10ms]
+  ✓  Status code is 201
+  ✓  Response has status success
+
+↳ Create Payment Event
+  POST http://127.0.0.1:8082/api/events/payment [201 Created, 294B, 10ms]
+  ✓  Status code is 201
+  ✓  Response has status success
+
+┌─────────────────────────┬───────────────────┬──────────────────┐
+│                         │          executed │           failed │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│              iterations │                 1 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│                requests │                 4 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│            test-scripts │                 4 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│      prerequest-scripts │                 0 │                0 │
+├─────────────────────────┼───────────────────┼──────────────────┤
+│              assertions │                 8 │                0 │
+├─────────────────────────┴───────────────────┴──────────────────┤
+│ total run duration: 596ms                                      │
+├────────────────────────────────────────────────────────────────┤
+│ total data received: 320B (approx)                             │
+├────────────────────────────────────────────────────────────────┤
+│ average response time: 17ms [min: 10ms, max: 35ms, s.d.: 10ms] │
+└────────────────────────────────────────────────────────────────┘
+Newman run completed!
+Total requests: 4
+Failed requests: 0
+Total assertions: 8
+Failed assertions: 0

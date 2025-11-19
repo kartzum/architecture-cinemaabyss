@@ -1,0 +1,5 @@
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_BROKERS:kafka:9092}
+server:
+  port: ${PORT:8082}
