@@ -30,36 +30,11 @@ spec:
           ports:
             - containerPort: {{ .Values.eventsService.service.targetPort }}
           env:
-            - name: SERVER_PORT
+            - name: PORT
               value: "{{ .Values.eventsService.service.targetPort }}"
-            - name: KAFKA_BOOTSTRAP_SERVERS
-              value: "kafka:9092"
-            - name: KAFKA_BROKERS
-              value: "kafka:9092"
-            - name: KAFKA_READ_TIMEOUT
-              value: "30s"
-            - name: KAFKA_WRITE_TIMEOUT
-              value: "30s"
           resources:
             {{- toYaml .Values.eventsService.resources | nindent 12 }}
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: {{ .Values.eventsService.service.targetPort }}
-            initialDelaySeconds: 50
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: {{ .Values.eventsService.service.targetPort }}
-            initialDelaySeconds: 25
-            periodSeconds: 5
-          startupProbe:
-            httpGet:
-              path: /health
-              port: {{ .Values.eventsService.service.targetPort }}
-            initialDelaySeconds: 15
-            periodSeconds: 5
+      restartPolicy: Always
       imagePullSecrets:
         - name: dockerconfigjson
 ---
